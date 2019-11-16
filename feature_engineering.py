@@ -24,6 +24,8 @@ def date_features(df):
     df['month'] = [x.date().month for x in df['date_time']] 
     df['day'] = [x.date().day for x in df['date_time']] 
     df['weekday'] = [x.date().weekday() for x in df['date_time']]
+
+    df['weekday'] = df.weekday.apply(lambda x: 'work_day' if x in [0,1,2,3,4] else 'weekend')
     
     one_hot = pd.get_dummies(df['weekday'])
     df = df.join(one_hot)
@@ -31,10 +33,13 @@ def date_features(df):
 
 def mail_features(df) : 
     # clean code a bit
-    df['mail_type'] = df['mail_type'].apply(lambda x: x.lower().strip() if type(x) is str else x)
-    
+    df['mail_type_0'] = df['mail_type'].apply(lambda x: x.lower().strip().split('/')[0] if type(x) is str else x)
+    df['mail_type_1'] = df['mail_type'].apply(lambda x: x.lower().strip().split('/')[1] if type(x) is str else x)
     # mail_type one hot encoding
-    one_hot = pd.get_dummies(df['mail_type'])
+    one_hot = pd.get_dummies(df['mail_type_0'])
+    df = df.join(one_hot)
+
+    one_hot = pd.get_dummies(df['mail_type_1'])
     df = df.join(one_hot)
     
     return df
@@ -81,3 +86,16 @@ def tld_features(df):
     df['tld'] = df['tld'].apply(lambda x: 'unspecified' if type(x) is not str else x)
     
     return df
+
+def salutation_designation_features(df):
+    df['sals+designation'] = df['salutations'] +  df['designation']
+
+    return df 
+
+def image_features(df): 
+    df['images'] = df['images'].apply(lambda x: 'no_images' if x == 0 else 'very_few_images' if  1 <= x <= 15 else 'many_images' if x >= 35 else 'average_images')
+
+    one_hot = pd.get_dummies(df['images'])
+    df = df.join(one_hot)
+
+    return df 
