@@ -99,3 +99,34 @@ def image_features(df):
     df = df.join(one_hot)
 
     return df 
+
+#----------------------------------------------RV-------------
+# Date - Time classification 
+
+    
+#  Create 3 buckets for time and 2 for day
+def hour_flag(df):
+
+    if (16 <= df['hour'] < 24):
+        return '0'
+    elif(0 <= df['hour'] < 8):
+        return '1'
+    elif(8 <= df['hour'] < 16):
+        return '2'
+    
+def hour_feature(df):
+    df['hour_flag'] = df.apply(hour_flag, axis = 1)
+    return df 
+
+def day_flag(df):
+
+    if (df['weekday'] <= 5):
+        return '0'
+    else:
+        return '1'
+    
+def day_feature(df):
+    df['day_flag'] = df.apply(day_flag, axis = 1)
+    return df 
+
+    
