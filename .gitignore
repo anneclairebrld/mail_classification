@@ -1,5 +1,7 @@
 
 *.csv
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 .ipynb_checkpoints/
 
@@ -10,3 +12,11 @@ __pycache__/
 *.html
 
 *.docx
+
+.ipynb_checkpoints/
+
+__pycache__/
+=======
+
+.ipynb_checkpoints/
+>>>>>>> Stashed changes
